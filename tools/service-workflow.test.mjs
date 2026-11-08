@@ -1,0 +1,86 @@
+const store = {}; globalThis.localStorage = { getItem: k => store[k] ?? null, setItem: (k, v) => { store[k] = String(v) }, removeItem: k => { delete store[k] } }
+globalThis.sessionStorage = globalThis.localStorage
+const S = await import('../src/services/index.js')
+const { authService: A, postService: P, offerService: O, transactionService: T, messageService: M, notificationService: N, reviewService: R, adminService: AD, reportService: RP, userService: U } = S
+let pass = 0, bad = 0
+const ok = (n, c) => { c ? pass++ : (bad++, console.log('FAIL', n)) }
+const rejects = async (n, fn, code) => { try { await fn(); ok(n + ' (should throw)', false) } catch (e) { ok(n, !code || e.code === code); if (code && e.code !== code) console.log('  got', e.code, e.message) } }
+// AUTH
+await rejects('empty login', () => A.login('', ''))
+await rejects('bad password', () => A.login('jake.b', 'nope'), 'UNAUTHORIZED')
+ok('login username', (await A.login('jake.b', 'User@123')).role === 'user')
+ok('login email', (await A.login('jerume@example.com', 'User@123')).username === 'jerume.a')
+await rejects('user as admin login', () => A.login('jake.b', 'User@123', false, true), 'FORBIDDEN')
+const reg = { name: 'New Person', username: 'newp', email: 'newp@example.com', phone: '09171112222', password: 'Passw0rdX', confirm: 'Passw0rdX', terms: true }
+await rejects('dup username', () => A.register({ ...reg, username: 'JAKE.B' }), 'CONFLICT')
+await rejects('dup email', () => A.register({ ...reg, email: 'jake@example.com' }), 'CONFLICT')
+await rejects('pw mismatch', () => A.register({ ...reg, confirm: 'x' }))
+await rejects('no terms', () => A.register({ ...reg, terms: false }))
+const np = await A.register({ ...reg, role: 'admin' }); ok('register => user role even if role passed', np.role === 'user')
+// POSTS
+const J = 'u_jake', E = 'u_jerume', B = 'u_bugoyna', ADM = 'u_admin'
+const day = n => new Date(Date.now() + n * 864e5).toISOString().slice(0, 10)
+await rejects('bad qty', () => P.create(J, { type: 'request', title: 'X', origin: 'a', destination: 'b', quantity: 0, budget: 10, neededDate: day(2) }))
+await rejects('neg budget', () => P.create(J, { type: 'request', title: 'X', origin: 'a', destination: 'b', quantity: 1, budget: -5, neededDate: day(2) }))
+await rejects('past date', () => P.create(J, { type: 'request', title: 'X', origin: 'a', destination: 'b', quantity: 1, budget: 5, neededDate: day(-2) }))
+const req = await P.create(J, { type: 'request', title: 'Phone case', origin: 'Masbate City', destination: 'Dimasalang', quantity: 2, budget: 300, neededDate: day(4) })
+ok('new post appears in feed', (await P.getAll()).some(p => p.id === req.id))
+ok('search by item', (await P.getAll({ q: 'phone' })).length === 1)
+ok('search by author', (await P.getAll({ q: 'jake' })).length >= 2)
+ok('filter type trip', (await P.getAll({ type: 'trip' })).every(p => p.type === 'trip'))
+ok('filter destination', (await P.getAll({ destination: 'Masbate City' })).every(p => p.destination === 'Masbate City'))
+await rejects('non-owner edit', () => P.update(req.id, E, { budget: 1 }), 'FORBIDDEN')
+await rejects('non-owner delete', () => P.remove(req.id, E), 'FORBIDDEN')
+ok('owner edit', (await P.update(req.id, J, { budget: 350 })).budget === 350)
+// OFFERS + TRANSACTION FLOW
+await rejects('offer on own post', () => O.create(J, { postId: req.id, proposedPrice: 50 }), 'FORBIDDEN')
+await rejects('neg offer', () => O.create(E, { postId: req.id, proposedPrice: -1 }))
+const o1 = await O.create(E, { postId: req.id, proposedPrice: 80, message: 'I can' })
+const o2 = await O.create(B, { postId: req.id, proposedPrice: 90 })
+await rejects('dup pending offer', () => O.create(E, { postId: req.id, proposedPrice: 70 }), 'CONFLICT')
+ok('offer count', (await P.getById(req.id)).offerCount === 2)
+await rejects('non-owner sees offers', () => O.getByPost(req.id, E), 'FORBIDDEN')
+ok('requester notified of offer', (await N.getForUser(J)).some(n => n.type === 'offer'))
+await rejects('non-owner accept', () => O.accept(o1.id, E), 'NOT_FOUND')
+await O.reject(o2.id, J); ok('rejected notifies traveler', (await N.getForUser(B)).some(n => n.type === 'offer_rejected'))
+const tx = await O.accept(o1.id, J); ok('accept creates pending tx', tx.transactionStatus === 'pending' && tx.agreedPrice === 80 && tx.paymentStatus === 'unpaid')
+ok('post closed after accept', !(await P.getAll()).some(p => p.id === req.id))
+await rejects('pay before approve', () => T.act(tx.id, J, 'pay', { method: 'GCash' }), 'INVALID_TRANSITION')
+await rejects('requester approves (traveler only)', () => T.act(tx.id, J, 'approve'), 'FORBIDDEN')
+await rejects('outsider acts', () => T.act(tx.id, B, 'cancel'), 'FORBIDDEN')
+await T.act(tx.id, E, 'approve'); await rejects('skip to ship', () => T.act(tx.id, E, 'ship'), 'INVALID_TRANSITION')
+let t = await T.act(tx.id, J, 'pay', { method: 'GCash' }); ok('paid => held (simulated)', t.transactionStatus === 'paid' && t.paymentStatus === 'held')
+await rejects('cancel after payment', () => T.act(tx.id, J, 'cancel'), 'INVALID_TRANSITION')
+await rejects('requester confirm too early', () => T.act(tx.id, J, 'confirm'), 'INVALID_TRANSITION')
+await T.act(tx.id, E, 'ship'); await T.act(tx.id, E, 'deliver'); await rejects('traveler confirms own delivery', () => T.act(tx.id, E, 'confirm'), 'FORBIDDEN')
+await rejects('review before complete', () => R.create(J, { transactionId: tx.id, rating: 5 }))
+t = await T.act(tx.id, J, 'confirm'); ok('completed + released', t.transactionStatus === 'completed' && t.paymentStatus === 'released')
+ok('notified on each step', (await N.getForUser(E)).filter(n => n.type === 'transaction').length >= 3)
+await rejects('bad rating', () => R.create(J, { transactionId: tx.id, rating: 6 }))
+await R.create(J, { transactionId: tx.id, rating: 5, comment: 'Great' }); await rejects('dup review', () => R.create(J, { transactionId: tx.id, rating: 4 }), 'CONFLICT')
+await rejects('outsider review', () => R.create(B, { transactionId: tx.id, rating: 4 }), 'FORBIDDEN')
+ok('rating avg', (await U.getById(E)).rating === 5)
+// cancel-before-payment reopens post
+const r2 = await P.create(J, { type: 'request', title: 'Soap', origin: 'a', destination: 'b', quantity: 1, budget: 10, neededDate: day(3) })
+const o3 = await O.create(B, { postId: r2.id, proposedPrice: 20 }); const tx2 = await O.accept(o3.id, J); await T.act(tx2.id, J, 'cancel')
+ok('cancel reopens post', (await P.getAll()).some(p => p.id === r2.id)); await rejects('act on cancelled', () => T.act(tx2.id, J, 'pay'), 'INVALID_TRANSITION')
+await rejects('delete post w/ active tx', async () => { const r3 = await P.create(J, { type: 'request', title: 'Hat', origin: 'a', destination: 'b', quantity: 1, budget: 10, neededDate: day(3) }); const o = await O.create(E, { postId: r3.id, proposedPrice: 1 }); await O.accept(o.id, J); await P.remove(r3.id, J) })
+// DISPUTE
+const r4 = await P.create(J, { type: 'request', title: 'Bag', origin: 'a', destination: 'b', quantity: 1, budget: 10, neededDate: day(3) }); const o4 = await O.create(E, { postId: r4.id, proposedPrice: 5 }); const tx4 = await O.accept(o4.id, J)
+await T.act(tx4.id, E, 'approve'); await T.act(tx4.id, J, 'pay', { method: 'GCash' }); await T.act(tx4.id, J, 'dispute')
+await rejects('non-admin resolves', () => AD.resolveDispute(tx4.id, 'refund', J), 'FORBIDDEN'); ok('admin refunds (simulated)', (await AD.resolveDispute(tx4.id, 'refund', ADM)).paymentStatus === 'refunded')
+// MESSAGES
+await rejects('empty msg', () => M.send(J, E, '  ')); await M.send(J, E, 'Hi!'); await M.send(E, J, 'Hello'); await M.send(J, E, 'Ok?')
+const convs = await M.getConversations(E); ok('conversation unread', convs[0].unread === 2 && convs[0].otherUsername === 'jake.b')
+await rejects('outsider opens thread', () => M.getThread(B, convs[0].id), 'FORBIDDEN'); ok('thread read marks', (await M.getThread(E, convs[0].id)).length === 3 && (await M.unreadCount(E)) === 0)
+// ADMIN
+await rejects('user stats', () => AD.stats(J), 'FORBIDDEN'); const st = await AD.stats(ADM); ok('stats real', st.totalUsers === 4 && st.totalTransactions >= 4 && st.byStatus.completed === 1)
+await AD.setVerified(E, true, ADM); ok('verify notifies', (await N.getForUser(E)).some(n => n.type === 'verification'))
+await AD.setSuspended(B, true, ADM); await rejects('suspended cant post', () => P.create(B, { type: 'request', title: 'Z', origin: 'a', destination: 'b', quantity: 1, budget: 1, neededDate: day(2) }), 'FORBIDDEN')
+await rejects('suspended cant login', () => A.login('bugoyna.jccoy', 'User@123'), 'FORBIDDEN'); await AD.setSuspended(B, false, ADM)
+await AD.removePost('p_cake', ADM); ok('removed post gone', !(await P.getAll()).some(p => p.id === 'p_cake'))
+const rep = await RP.create(J, { targetId: 'p_watch', targetType: 'post', reason: 'spam' }); await rejects('resolve needs decision', () => RP.resolve(rep.id, ADM, ''))
+await RP.resolve(rep.id, ADM, 'Warned user'); await rejects('resolve twice', () => RP.resolve(rep.id, ADM, 'x'), 'INVALID_TRANSITION'); ok('logs recorded', (await AD.getLogs(ADM)).length >= 5)
+// mark read
+const ns = await N.getForUser(J); await N.markRead(ns[0].id, J); await N.markAllRead(J); ok('mark all read', (await N.unreadCount(J)) === 0)
+console.log(`\nservice workflow tests: ${pass} passed, ${bad} failed`)

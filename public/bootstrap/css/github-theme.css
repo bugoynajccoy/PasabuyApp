@@ -1,0 +1,455 @@
+/*!
+ * GitHub theme for Bootstrap 5.3.x  (Primer palette, light + dark)
+ * Load AFTER bootstrap.min.css. Colors, font, and visual polish only:
+ * no markup, layout, or JavaScript is changed.
+ *
+ * Light  canvas #fff / subtle #f6f8fa / border #d0d7de / text #1f2328 / muted #656d76
+ * Dark   canvas #0d1117 / subtle #161b22 / border #30363d / text #e6edf3 / muted #8d96a0
+ * Green  #1f883d (light) #238636 (dark)   Blue  #0969da (light) #4493f8 (dark)
+ * Dark mode follows the device setting automatically (prefers-color-scheme).
+ */
+
+/* ------------------------------------------------------------------ *
+ * 1. Tokens
+ * ------------------------------------------------------------------ */
+:root,
+[data-bs-theme=light] {
+  color-scheme: light;
+
+  --gh-canvas: #ffffff;
+  --gh-subtle: #f6f8fa;
+  --gh-inset: #eaeef2;
+  --gh-border: #d0d7de;
+  --gh-border-muted: #d8dee4;
+  --gh-fg: #1f2328;
+  --gh-muted: #656d76;
+  --gh-green: #1f883d;
+  --gh-green-hover: #1a7f37;
+  --gh-green-active: #187733;
+  --gh-green-fg: #1a7f37;
+  --gh-green-subtle: #dafbe1;
+  --gh-blue: #0969da;
+  --gh-blue-hover: #0550ae;
+  --gh-attention-fg: #9a6700;
+  --gh-attention-subtle: #fff8c5;
+  --gh-danger: #d1242f;
+  --gh-btn-bg: #f6f8fa;
+  --gh-btn-hover: #eaeef2;
+  --gh-btn-text: #24292f;
+  --gh-shadow: 0 1px 0 rgba(31, 35, 40, 0.04);
+  --gh-shadow-lg: 0 8px 24px rgba(140, 149, 159, 0.2);
+  --gh-focus: rgba(9, 105, 218, 0.3);
+  --gh-hover-bg: rgba(208, 215, 222, 0.32);
+
+  --bs-font-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 0.9375rem;
+  --bs-body-line-height: 1.5;
+
+  --bs-body-bg: #ffffff;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-body-color: #1f2328;
+  --bs-body-color-rgb: 31, 35, 40;
+  --bs-emphasis-color: #1f2328;
+  --bs-heading-color: #1f2328;
+  --bs-secondary-color: #656d76;
+  --bs-secondary-bg: #f6f8fa;
+  --bs-tertiary-bg: #f6f8fa;
+  --bs-border-color: #d0d7de;
+  --bs-border-radius: 0.375rem;
+  --bs-border-radius-lg: 0.5rem;
+  --bs-border-radius-xl: 0.75rem;
+
+  --bs-primary: #1f883d;
+  --bs-primary-rgb: 31, 136, 61;
+  --bs-secondary: #656d76;
+  --bs-secondary-rgb: 101, 109, 118;
+  --bs-success: #1a7f37;
+  --bs-success-rgb: 26, 127, 55;
+  --bs-info: #0969da;
+  --bs-info-rgb: 9, 105, 218;
+  --bs-warning: #bf8700;
+  --bs-warning-rgb: 191, 135, 0;
+  --bs-danger: #d1242f;
+  --bs-danger-rgb: 209, 36, 47;
+  --bs-light: #f6f8fa;
+  --bs-light-rgb: 246, 248, 250;
+  --bs-dark: #24292f;
+  --bs-dark-rgb: 36, 41, 47;
+
+  --bs-primary-text-emphasis: #116329;
+  --bs-primary-bg-subtle: #dafbe1;
+  --bs-primary-border-subtle: #aceebb;
+  --bs-success-text-emphasis: #116329;
+  --bs-success-bg-subtle: #dafbe1;
+  --bs-success-border-subtle: #aceebb;
+  --bs-warning-text-emphasis: #7d4e00;
+  --bs-warning-bg-subtle: #fff8c5;
+  --bs-warning-border-subtle: #eac54f;
+  --bs-danger-text-emphasis: #82071e;
+  --bs-danger-bg-subtle: #ffebe9;
+  --bs-danger-border-subtle: #ffcecb;
+
+  --bs-link-color: #0969da;
+  --bs-link-color-rgb: 9, 105, 218;
+  --bs-link-hover-color: #0550ae;
+  --bs-link-hover-color-rgb: 5, 80, 174;
+  --bs-focus-ring-color: rgba(9, 105, 218, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-bs-theme=light]) {
+    color-scheme: dark;
+
+    --gh-canvas: #0d1117;
+    --gh-subtle: #161b22;
+    --gh-inset: #010409;
+    --gh-border: #30363d;
+    --gh-border-muted: #21262d;
+    --gh-fg: #e6edf3;
+    --gh-muted: #8d96a0;
+    --gh-green: #238636;
+    --gh-green-hover: #2ea043;
+    --gh-green-active: #196c2e;
+    --gh-green-fg: #3fb950;
+    --gh-green-subtle: rgba(46, 160, 67, 0.15);
+    --gh-blue: #4493f8;
+    --gh-blue-hover: #79c0ff;
+    --gh-attention-fg: #d29922;
+    --gh-attention-subtle: rgba(187, 128, 9, 0.15);
+    --gh-danger: #f85149;
+    --gh-btn-bg: #21262d;
+    --gh-btn-hover: #30363d;
+    --gh-btn-text: #e6edf3;
+    --gh-shadow: 0 0 transparent;
+    --gh-shadow-lg: 0 8px 24px rgba(1, 4, 9, 0.85);
+    --gh-focus: rgba(68, 147, 248, 0.4);
+    --gh-hover-bg: rgba(110, 118, 129, 0.2);
+
+    --bs-body-bg: #0d1117;
+    --bs-body-bg-rgb: 13, 17, 23;
+    --bs-body-color: #e6edf3;
+    --bs-body-color-rgb: 230, 237, 243;
+    --bs-emphasis-color: #ffffff;
+    --bs-heading-color: #e6edf3;
+    --bs-secondary-color: #8d96a0;
+    --bs-secondary-bg: #161b22;
+    --bs-tertiary-bg: #161b22;
+    --bs-border-color: #30363d;
+
+    --bs-primary: #238636;
+    --bs-primary-rgb: 35, 134, 54;
+    --bs-secondary: #8d96a0;
+    --bs-secondary-rgb: 141, 150, 160;
+    --bs-success: #3fb950;
+    --bs-success-rgb: 63, 185, 80;
+    --bs-info: #4493f8;
+    --bs-info-rgb: 68, 147, 248;
+    --bs-warning: #d29922;
+    --bs-warning-rgb: 210, 153, 34;
+    --bs-danger: #f85149;
+    --bs-danger-rgb: 248, 81, 73;
+    --bs-dark: #21262d;
+    --bs-dark-rgb: 33, 38, 45;
+
+    --bs-primary-text-emphasis: #3fb950;
+    --bs-primary-bg-subtle: rgba(46, 160, 67, 0.15);
+    --bs-primary-border-subtle: rgba(46, 160, 67, 0.4);
+    --bs-success-text-emphasis: #3fb950;
+    --bs-success-bg-subtle: rgba(46, 160, 67, 0.15);
+    --bs-success-border-subtle: rgba(46, 160, 67, 0.4);
+    --bs-warning-text-emphasis: #d29922;
+    --bs-warning-bg-subtle: rgba(187, 128, 9, 0.15);
+    --bs-warning-border-subtle: rgba(187, 128, 9, 0.4);
+    --bs-danger-text-emphasis: #f85149;
+    --bs-danger-bg-subtle: rgba(248, 81, 73, 0.1);
+    --bs-danger-border-subtle: rgba(248, 81, 73, 0.4);
+
+    --bs-link-color: #4493f8;
+    --bs-link-color-rgb: 68, 147, 248;
+    --bs-link-hover-color: #79c0ff;
+    --bs-link-hover-color-rgb: 121, 192, 255;
+    --bs-focus-ring-color: rgba(68, 147, 248, 0.4);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * 2. Base: font, background, text, links, selection, scrollbars
+ * ------------------------------------------------------------------ */
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--bs-body-font-family);
+  background-color: var(--gh-canvas);
+  color: var(--gh-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--gh-fg);
+  letter-spacing: -0.01em;
+}
+
+a { text-decoration: none; }
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.list-group-item):not(.dropdown-item):hover { text-decoration: underline; }
+
+::selection { background: rgba(9, 105, 218, 0.2); }
+
+:focus-visible {
+  outline: 2px solid var(--gh-blue);
+  outline-offset: 2px;
+}
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible { outline: none; }
+
+* { scrollbar-color: var(--gh-border) transparent; }
+
+hr { border-color: var(--gh-border); opacity: 1; }
+
+/* ------------------------------------------------------------------ *
+ * 3. Text and background helpers used by the pages
+ *    (colors only; Bootstrap's own opacity utilities keep working)
+ * ------------------------------------------------------------------ */
+.text-black,
+.text-dark,
+.text-dark-emphasis { color: var(--gh-fg) !important; }
+.text-secondary,
+.text-muted { color: var(--gh-muted) !important; }
+.text-primary,
+.text-success { color: var(--gh-green-fg) !important; }
+.text-warning { color: var(--gh-attention-fg) !important; }
+.text-white,
+.text-light { color: #ffffff !important; }
+
+.bg-white { background-color: var(--gh-canvas) !important; }
+.bg-light { background-color: var(--gh-subtle) !important; }
+.bg-warning-subtle { background-color: var(--gh-attention-subtle) !important; }
+.bg-success-subtle { background-color: var(--gh-green-subtle) !important; }
+.border,
+.border-top,
+.border-bottom,
+.border-start,
+.border-end { border-color: var(--gh-border) !important; }
+
+/* Soft tinted fills keep readable text on top of them */
+.bg-opacity-10, .bg-opacity-25 { --bs-bg-opacity: 0.14; }
+.badge.bg-opacity-25 { --bs-bg-opacity: 0.16; }
+
+/* ------------------------------------------------------------------ *
+ * 4. Buttons
+ * ------------------------------------------------------------------ */
+.btn {
+  --bs-btn-font-weight: 500;
+  --bs-btn-border-radius: 0.375rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  box-shadow: var(--gh-shadow);
+}
+.btn:active { transform: translateY(0.5px); }
+.btn:focus-visible { box-shadow: 0 0 0 3px var(--gh-focus); }
+
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-dark {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: var(--gh-green);
+  --bs-btn-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: var(--gh-green-hover);
+  --bs-btn-hover-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-focus-shadow-rgb: 31, 136, 61;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: var(--gh-green-active);
+  --bs-btn-active-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-disabled-color: rgba(255, 255, 255, 0.8);
+  --bs-btn-disabled-bg: var(--gh-green);
+  --bs-btn-disabled-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-disabled-opacity: 0.55;
+}
+.btn-danger {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #d1242f;
+  --bs-btn-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #a40e26;
+  --bs-btn-hover-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #82071e;
+  --bs-btn-active-border-color: rgba(31, 35, 40, 0.15);
+  --bs-btn-focus-shadow-rgb: 209, 36, 47;
+}
+.btn-outline-dark,
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-light {
+  --bs-btn-color: var(--gh-btn-text);
+  --bs-btn-bg: var(--gh-btn-bg);
+  --bs-btn-border-color: var(--gh-border);
+  --bs-btn-hover-color: var(--gh-btn-text);
+  --bs-btn-hover-bg: var(--gh-btn-hover);
+  --bs-btn-hover-border-color: var(--gh-border);
+  --bs-btn-active-color: var(--gh-btn-text);
+  --bs-btn-active-bg: var(--gh-btn-hover);
+  --bs-btn-active-border-color: var(--gh-border);
+  --bs-btn-disabled-color: var(--gh-muted);
+  --bs-btn-disabled-bg: var(--gh-btn-bg);
+  --bs-btn-disabled-border-color: var(--gh-border);
+  --bs-btn-focus-shadow-rgb: 9, 105, 218;
+}
+/* Buttons that wrap a link keep the button's text color */
+.btn .nav-link,
+.btn a { color: inherit !important; padding: 0; }
+.btn-close { --bs-btn-close-focus-shadow: 0 0 0 3px var(--gh-focus); }
+
+/* ------------------------------------------------------------------ *
+ * 5. Navbar, sidebar, bottom nav, tabs (replaces the orange hovers)
+ * ------------------------------------------------------------------ */
+.navbar {
+  --bs-navbar-color: var(--gh-fg);
+  --bs-navbar-hover-color: var(--gh-blue);
+  --bs-navbar-brand-color: var(--gh-fg);
+  background-color: color-mix(in srgb, var(--gh-canvas) 88%, transparent) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom-color: var(--gh-border) !important;
+}
+.navbar-brand { font-weight: 700; letter-spacing: -0.02em; }
+
+#sidebar,
+#home { border-right-color: var(--gh-border) !important; }
+
+#sidebar a,
+#post-button a,
+.nav-tabs .nav-link { color: var(--gh-fg); }
+
+#sidebar a {
+  border-radius: 0.375rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+#sidebar a:hover { background-color: var(--gh-hover-bg); color: var(--gh-fg); }
+
+#post-button a:hover,
+#post-button a small:hover,
+.navbar-nav a:hover,
+.nav-item:hover,
+.nav-tabs .nav-link:hover { color: var(--gh-blue) !important; }
+
+#bottom-nav svg { color: var(--gh-muted); }
+#bottom-nav.active svg { color: var(--gh-fg); }
+
+.nav-tabs { border-bottom-color: var(--gh-border); }
+.nav-tabs .nav-link.active {
+  color: var(--gh-fg) !important;
+  background: transparent;
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 #fd8c73;
+}
+.nav-pills { --bs-nav-pills-link-active-bg: var(--gh-blue); }
+
+/* ------------------------------------------------------------------ *
+ * 6. Cards, lists, modals, offcanvas, dropdowns
+ * ------------------------------------------------------------------ */
+.card {
+  --bs-card-bg: var(--gh-canvas);
+  --bs-card-border-color: var(--gh-border);
+  --bs-card-cap-bg: var(--gh-subtle);
+  --bs-card-border-radius: 0.5rem;
+  --bs-card-inner-border-radius: calc(0.5rem - 1px);
+  box-shadow: var(--gh-shadow);
+  color: var(--gh-fg);
+}
+.card-header { border-bottom-color: var(--gh-border); font-weight: 600; }
+
+.list-group {
+  --bs-list-group-bg: transparent;
+  --bs-list-group-color: var(--gh-fg);
+  --bs-list-group-border-color: var(--gh-border);
+  --bs-list-group-action-hover-bg: var(--gh-subtle);
+  --bs-list-group-action-hover-color: var(--gh-fg);
+  --bs-list-group-action-active-bg: var(--gh-inset);
+  --bs-list-group-active-bg: var(--gh-blue);
+  --bs-list-group-active-border-color: var(--gh-blue);
+}
+
+.modal-content,
+.offcanvas,
+.dropdown-menu {
+  --bs-modal-bg: var(--gh-canvas);
+  --bs-modal-color: var(--gh-fg);
+  --bs-modal-border-color: var(--gh-border);
+  --bs-modal-header-border-color: var(--gh-border);
+  --bs-modal-footer-border-color: var(--gh-border);
+  --bs-offcanvas-bg: var(--gh-canvas);
+  --bs-offcanvas-color: var(--gh-fg);
+  --bs-offcanvas-border-color: var(--gh-border);
+  --bs-dropdown-bg: var(--gh-canvas);
+  --bs-dropdown-color: var(--gh-fg);
+  --bs-dropdown-border-color: var(--gh-border);
+  --bs-dropdown-link-color: var(--gh-fg);
+  --bs-dropdown-link-hover-bg: var(--gh-subtle);
+  --bs-dropdown-link-active-bg: var(--gh-blue);
+  --bs-dropdown-divider-bg: var(--gh-border);
+  box-shadow: var(--gh-shadow-lg);
+}
+.offcanvas.offcanvas-bottom { border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+.modal-content { border-radius: 0.75rem; }
+.modal-backdrop { --bs-backdrop-bg: #010409; --bs-backdrop-opacity: 0.55; }
+.offcanvas-backdrop { --bs-backdrop-bg: #010409; }
+
+/* ------------------------------------------------------------------ *
+ * 7. Forms (search box, inputs)
+ * ------------------------------------------------------------------ */
+.form-control,
+.form-select {
+  background-color: var(--gh-canvas);
+  border-color: var(--gh-border);
+  color: var(--gh-fg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.form-control::placeholder { color: var(--gh-muted); opacity: 0.85; }
+.form-control:hover:not(:focus):not(:disabled) { border-color: var(--gh-muted); }
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  background-color: var(--gh-canvas);
+  color: var(--gh-fg);
+  border-color: var(--gh-blue);
+  box-shadow: 0 0 0 3px var(--gh-focus);
+}
+.form-control:disabled { background-color: var(--gh-subtle); }
+.form-label { font-weight: 600; font-size: 0.875rem; color: var(--gh-fg); }
+.form-check-input { border-color: var(--gh-border); background-color: var(--gh-canvas); }
+.form-check-input:checked { background-color: var(--gh-green); border-color: var(--gh-green); }
+
+/* ------------------------------------------------------------------ *
+ * 8. Badges, progress, alerts
+ * ------------------------------------------------------------------ */
+.badge { font-weight: 600; letter-spacing: 0.01em; }
+.progress {
+  --bs-progress-bg: var(--gh-inset);
+  --bs-progress-bar-bg: var(--gh-green);
+  --bs-progress-border-radius: 999px;
+}
+
+/* ------------------------------------------------------------------ *
+ * 9. Dark-mode fixes for elements that hard-code light colors
+ * ------------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-bs-theme=light]) .btn-primary,
+  :root:not([data-bs-theme=light]) .btn-success,
+  :root:not([data-bs-theme=light]) .btn-warning,
+  :root:not([data-bs-theme=light]) .btn-dark {
+    --bs-btn-border-color: rgba(240, 246, 252, 0.1);
+    --bs-btn-hover-border-color: rgba(240, 246, 252, 0.1);
+    --bs-btn-active-border-color: rgba(240, 246, 252, 0.1);
+  }
+  :root:not([data-bs-theme=light]) .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+  :root:not([data-bs-theme=light]) ::selection { background: rgba(56, 139, 253, 0.4); }
+  :root:not([data-bs-theme=light]) .nav-tabs .nav-link.active { box-shadow: inset 0 -2px 0 #f78166; }
+  :root:not([data-bs-theme=light]) #sidebar svg,
+  :root:not([data-bs-theme=light]) .bi { color: currentColor; }
+}

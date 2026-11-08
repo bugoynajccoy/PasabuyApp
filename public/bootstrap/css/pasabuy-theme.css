@@ -1,0 +1,202 @@
+/*!
+ * Pasabuy theme for Bootstrap 5.3.x  (Option 3: fresh emerald + coral)
+ * Load AFTER bootstrap.css / bootstrap.min.css.
+ *
+ * Palette
+ *   Emerald  #059669  brand fills, avatars, icons
+ *   Emerald  #047857  buttons and links (passes AA contrast with white text)
+ *   Coral    #FF6B4A  accent: the "+" button, badges, highlights
+ *   Ink      #111827  body text
+ *   Mint     #D1FAE5  soft chips / subtle backgrounds, text on it #065F46
+ */
+
+:root,
+[data-bs-theme=light] {
+  /* Pasabuy tokens (use these in your own CSS) */
+  --pb-emerald: #059669;
+  --pb-emerald-strong: #047857;
+  --pb-emerald-deep: #065f46;
+  --pb-mint: #d1fae5;
+  --pb-mint-soft: #ecfdf5;
+  --pb-coral: #ff6b4a;
+  --pb-coral-strong: #e5502f;
+  --pb-coral-soft: #ffe4dd;
+  --pb-ink: #111827;
+  --pb-muted: #6b7280;
+
+  /* Bootstrap core colors */
+  --bs-primary: #059669;
+  --bs-primary-rgb: 5, 150, 105;
+  --bs-secondary: #6b7280;
+  --bs-secondary-rgb: 107, 114, 128;
+  --bs-success: #16a34a;
+  --bs-success-rgb: 22, 163, 74;
+  --bs-info: #0ea5e9;
+  --bs-info-rgb: 14, 165, 233;
+  --bs-warning: #f59e0b;
+  --bs-warning-rgb: 245, 158, 11;
+  --bs-danger: #dc2626;
+  --bs-danger-rgb: 220, 38, 38;
+  --bs-dark: #111827;
+  --bs-dark-rgb: 17, 24, 39;
+
+  --bs-primary-text-emphasis: #065f46;
+  --bs-primary-bg-subtle: #d1fae5;
+  --bs-primary-border-subtle: #6ee7b7;
+
+  --bs-body-color: #111827;
+  --bs-body-color-rgb: 17, 24, 39;
+  --bs-secondary-color: rgba(17, 24, 39, 0.65);
+  --bs-emphasis-color: #111827;
+  --bs-heading-color: #111827;
+
+  --bs-link-color: #047857;
+  --bs-link-color-rgb: 4, 120, 87;
+  --bs-link-hover-color: #065f46;
+  --bs-link-hover-color-rgb: 6, 95, 70;
+
+  --bs-focus-ring-color: rgba(5, 150, 105, 0.25);
+  --bs-border-radius: 0.625rem;
+  --bs-border-radius-lg: 0.875rem;
+  --bs-border-radius-xl: 1.125rem;
+}
+
+[data-bs-theme=dark] {
+  --bs-primary: #10b981;
+  --bs-primary-rgb: 16, 185, 129;
+  --bs-primary-text-emphasis: #6ee7b7;
+  --bs-primary-bg-subtle: #022c22;
+  --bs-primary-border-subtle: #065f46;
+  --bs-link-color: #34d399;
+  --bs-link-color-rgb: 52, 211, 153;
+  --bs-link-hover-color: #6ee7b7;
+  --bs-link-hover-color-rgb: 110, 231, 183;
+  --bs-focus-ring-color: rgba(16, 185, 129, 0.3);
+  --pb-mint: #022c22;
+  --pb-mint-soft: #04382d;
+  --pb-coral-soft: #4a1d12;
+}
+
+/* Buttons */
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #047857;
+  --bs-btn-border-color: #047857;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #065f46;
+  --bs-btn-hover-border-color: #065f46;
+  --bs-btn-focus-shadow-rgb: 5, 150, 105;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #064e3b;
+  --bs-btn-active-border-color: #064e3b;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #047857;
+  --bs-btn-disabled-border-color: #047857;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #047857;
+  --bs-btn-border-color: #047857;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #047857;
+  --bs-btn-hover-border-color: #047857;
+  --bs-btn-focus-shadow-rgb: 5, 150, 105;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #065f46;
+  --bs-btn-active-border-color: #065f46;
+  --bs-btn-disabled-color: #047857;
+  --bs-btn-disabled-border-color: #047857;
+}
+
+.btn-success {
+  --bs-btn-bg: #16a34a;
+  --bs-btn-border-color: #16a34a;
+  --bs-btn-hover-bg: #15803d;
+  --bs-btn-hover-border-color: #15803d;
+  --bs-btn-active-bg: #166534;
+  --bs-btn-active-border-color: #166534;
+  --bs-btn-focus-shadow-rgb: 22, 163, 74;
+}
+
+.btn-danger {
+  --bs-btn-bg: #dc2626;
+  --bs-btn-border-color: #dc2626;
+  --bs-btn-hover-bg: #b91c1c;
+  --bs-btn-hover-border-color: #b91c1c;
+  --bs-btn-active-bg: #991b1b;
+  --bs-btn-active-border-color: #991b1b;
+  --bs-btn-focus-shadow-rgb: 220, 38, 38;
+}
+
+/* New: coral accent button and helpers */
+.btn-accent {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #ff6b4a;
+  --bs-btn-border-color: #ff6b4a;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #e5502f;
+  --bs-btn-hover-border-color: #e5502f;
+  --bs-btn-focus-shadow-rgb: 255, 107, 74;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #cc4325;
+  --bs-btn-active-border-color: #cc4325;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #ff6b4a;
+  --bs-btn-disabled-border-color: #ff6b4a;
+}
+.bg-accent { background-color: var(--pb-coral) !important; color: #fff; }
+.text-accent { color: var(--pb-coral-strong) !important; }
+.border-accent { border-color: var(--pb-coral) !important; }
+
+/* Soft status chips: dark text on light tint, never bright text on bright fill */
+.badge-mint,
+.badge-held,
+.badge-coral {
+  display: inline-block;
+  padding: 0.25em 0.65em;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-mint  { background: #d1fae5; color: #065f46; }
+.badge-held  { background: #fef3c7; color: #92400e; }
+.badge-coral { background: #ffe4dd; color: #9a2f14; }
+
+/* Forms */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: #34d399;
+  box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25);
+}
+.form-check-input:checked,
+.form-check-input[type=checkbox]:indeterminate {
+  background-color: #047857;
+  border-color: #047857;
+}
+.form-switch .form-check-input:focus {
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2334d399'/%3e%3c/svg%3e");
+}
+.form-range:focus::-webkit-slider-thumb { box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(5, 150, 105, 0.25); }
+.form-range:focus::-moz-range-thumb { box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(5, 150, 105, 0.25); }
+.form-range::-webkit-slider-thumb { background-color: #047857; }
+.form-range::-moz-range-thumb { background-color: #047857; }
+
+/* Components that hardcode the old blue */
+.dropdown { --bs-dropdown-link-active-bg: #047857; }
+.dropdown-menu { --bs-dropdown-link-active-bg: #047857; }
+.nav-pills { --bs-nav-pills-link-active-bg: #047857; }
+.pagination {
+  --bs-pagination-active-bg: #047857;
+  --bs-pagination-active-border-color: #047857;
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25);
+}
+.progress { --bs-progress-bar-bg: #059669; }
+.list-group {
+  --bs-list-group-active-bg: #047857;
+  --bs-list-group-active-border-color: #047857;
+}
+.accordion { --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25); }
+.btn-close { --bs-btn-close-focus-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25); }
+.nav-link:focus-visible { box-shadow: 0 0 0 0.25rem rgba(5, 150, 105, 0.25); }
+.table-primary { --bs-table-bg: #d1fae5; --bs-table-border-color: #a7f3d0; --bs-table-color: #065f46; }

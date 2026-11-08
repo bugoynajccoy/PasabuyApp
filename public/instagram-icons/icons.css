@@ -1,0 +1,14 @@
+/* Line-icon style: 24px grid, thin rounded strokes (Lucide). 
+   Usage: <svg class="bi bi-md"><use href="sprite.svg#bi-heart"/></svg> */
+:root{--ic-stroke:1.75;--ic-yellow:#ffc107}
+.bi{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:var(--ic-stroke);
+    stroke-linecap:round;stroke-linejoin:round;vertical-align:-.125em;display:inline-block;flex-shrink:0}
+.bi-sm{width:16px;height:16px}.bi-md{width:24px;height:24px}
+.bi-lg{width:32px;height:32px}.bi-xl{width:48px;height:48px}
+.bi-bold{--ic-stroke:2.25}.bi-thin{--ic-stroke:1.25}
+.bi-fill{fill:currentColor}          /* solid / active state on any icon */
+.bi-like{color:#ff3040}
+/* yellow "create" button like the tab bar in the design */
+.create-btn{display:inline-flex;align-items:center;justify-content:center;width:50px;height:38px;
+    background:var(--ic-yellow);color:#111;border:0;border-radius:10px}
+.create-btn .bi{width:22px;height:22px}

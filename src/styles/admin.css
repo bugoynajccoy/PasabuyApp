@@ -1,0 +1,30 @@
+/* Admin chrome reuses Home's markup + the GitHub theme (github-theme.css). Only layout and a few theme-token hooks live here. */
+:root { --admin-active: rgba(255, 193, 7, 0.18); /* same highlight as Home's active sidebar row */ }
+@media (prefers-color-scheme: dark) { :root:not([data-bs-theme=light]) { --admin-active: rgba(187, 128, 9, 0.22); } }
+
+/* Bar-chart fill */
+.admin-bar { height: 10px; background: var(--gh-green); border-radius: 4px; }
+
+/* Desktop sidebar: Home's width (2/12 columns) but never narrower than the longest admin label needs */
+.admin-sidebar { width: max(16.666667%, 276px); flex: 0 0 max(16.666667%, 276px); position: sticky; top: 0; align-self: flex-start; height: 100vh; overflow-y: auto; }
+.admin-foot { border-top: 2px solid var(--gh-border); }
+.admin-foot .list-group-item { border: 0; }
+
+/* Let wide tables scroll inside their own box instead of widening the page */
+.admin-main { min-width: 0; }
+.admin-content { max-width: 1200px; width: 100%; }
+
+/* Mobile bars (the markup matches Home; these only add the active pill and safe-area padding) */
+.admin-tabbar { padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 1020; }
+.admin-tab { padding: 6px 2px 4px; line-height: 1.1; white-space: nowrap; }
+.admin-tab-icon { display: flex; align-items: center; justify-content: center; width: 48px; height: 30px; border-radius: 12px; }
+.admin-tab.active .admin-tab-icon { background: var(--gh-attention-subtle); color: var(--gh-attention-fg); }
+.admin-tab:focus-visible, #sidebar a:focus-visible { outline: 2px solid var(--gh-blue); outline-offset: -2px; }
+
+/* "More" bottom sheet (same look as the theme's offcanvas) */
+.admin-sheet-backdrop { position: fixed; inset: 0; z-index: 2000; background: rgba(1, 4, 9, 0.55); display: flex; align-items: flex-end; }
+.admin-sheet { width: 100%; max-height: 85vh; overflow-y: auto; border: 1px solid var(--gh-border); border-radius: 0.75rem 0.75rem 0 0; box-shadow: var(--gh-shadow-lg); padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); animation: admin-sheet-up 0.18s ease-out; }
+.admin-sheet .list-group-item { color: var(--gh-fg); background: transparent; border: 0; }
+.admin-sheet .list-group-item:hover { background: var(--gh-hover-bg); }
+@keyframes admin-sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .admin-sheet { animation: none; } }
