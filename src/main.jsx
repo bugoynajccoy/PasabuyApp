@@ -7,6 +7,9 @@ import './styles/admin.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { initSync } from './services/sync.js'
+  import './style.css'
+  import './icons.css'
+  import 'bootstrap/dist/css/bootstrap.min.css' // if installed via npm
 
 const start = () => ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
